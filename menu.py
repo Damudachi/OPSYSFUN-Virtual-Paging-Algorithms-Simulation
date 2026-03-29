@@ -1,5 +1,6 @@
 import optimal
 import lru
+import mru
 
 def display_results(algo_name, steps, faults, hits):
     """
@@ -52,6 +53,7 @@ def main_menu():
         print("\n===== PAGE REPLACEMENT ALGORITHM SIMULATOR =====")
         print("[1] LRU (Least Recently Used)")
         print("[2] Optimal (Belady's Algorithm)")
+        print("[3] MRU (Most Recently Used)")
         print("[0] Exit")
         
         choice = input("Select an algorithm: ")
@@ -60,7 +62,7 @@ def main_menu():
             print("Exiting Simulator. Goodbye!")
             break
         
-        if choice not in ['1', '2']:
+        if choice not in ['1', '2', '3']:
             print("\n[!] Invalid choice or Algorithm not yet implemented.")
             continue
 
@@ -76,6 +78,10 @@ def main_menu():
             # Calling run_optimal from optimal.py
             steps, faults, hits = optimal.run_optimal(pages, frames_count)
             display_results("Optimal", steps, faults, hits)
+        elif choice == "3":
+            # Calling run_mru from mru.py
+            steps, faults, hits = mru.run_mru(pages, frames_count)
+            display_results("MRU", steps, faults, hits)
 
 if __name__ == "__main__":
     main_menu()
