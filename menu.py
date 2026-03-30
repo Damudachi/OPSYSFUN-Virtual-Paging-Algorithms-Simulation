@@ -17,7 +17,7 @@ def display_results(algo_name, steps, faults, hits):
     
     for idx, step in enumerate(steps):
         # Displays the "Page reference string/requested pages"
-        frames_display = str(step['frames'])
+        frames_display = step.get('frames_display', str(step['frames']))
         print(f"{idx+1:<5} | {step['page']:<5} | {frames_display:<25} | {step['result']:<10}")
     
     print("-" * 70)
@@ -33,6 +33,9 @@ def display_results(algo_name, steps, faults, hits):
         
         print(f"Success Rate (Hit Ratio):         {success_rate:.2f}%")
         print(f"Failure Rate (Miss Ratio):        {failure_rate:.2f}%")
+
+    if algo_name.lower() == "second chance":
+        print("Legend: '*' means reference bit is 1")
     
     print("=" * 60)
 

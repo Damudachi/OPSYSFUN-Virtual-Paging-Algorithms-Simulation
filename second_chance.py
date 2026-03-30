@@ -1,3 +1,12 @@
+def format_frames_with_bits(frames, reference_bits):
+    formatted = []
+    for page, bit in zip(frames, reference_bits):
+        marker = "*" if bit == 1 else ""
+        formatted.append(f"{page}{marker}")
+
+    return "[" + ", ".join(formatted) + "]"
+
+
 def run_second_chance(pages, frames_count):
     frames = []
     reference_bits = []
@@ -32,6 +41,7 @@ def run_second_chance(pages, frames_count):
         steps.append({
             "page": page,
             "frames": frames.copy(),
+            "frames_display": format_frames_with_bits(frames, reference_bits),
             "result": result
         })
 
