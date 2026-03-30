@@ -1,35 +1,94 @@
-def run_mru(pages, frames_count):
-    frames = []
-    page_faults = 0
-    hits = 0
-    steps = []
-    
-    # We track the most recently used page by storing the last page that was accessed
-    most_recent_page = None
+# =====================================================
+# MRU (MOST RECENTLY USED) PAGE REPLACEMENT SIMULATOR
+# =====================================================
 
-    for page in pages:
+def print_results(hits, faults, total, capacity):
+
+    hit_ratio = (hits / total) * 100
+    failure_rate = (faults / total) * 100
+
+    print("-----------------------------------------------------")
+    print(f"Number of Pages (Total Requests): {total}")
+    print(f"Number of Frames: {capacity}")
+    print(f"Total Hits: {hits}")
+    print(f"Page Interrupts (Total Faults): {faults}")
+    print(f"Success Rate (Hit Ratio): {hit_ratio:.2f}%")
+    print(f"Failure Rate (Miss Ratio): {failure_rate:.2f}%")
+    print("=====================================================")
+
+
+def mru_simulation(pages, capacity):
+
+    frames = []
+    last_used = {}   # tracks most recent usage
+    hits = 0
+    faults = 0
+
+    print("\n==================== MRU RESULTS ====================")
+    print("Step | Page | Frames        | Result")
+    print("-----------------------------------------------------")
+
+    for step, page in enumerate(pages, start=1):
+
+        # PAGE HIT
         if page in frames:
             hits += 1
             result = "HIT"
+
+        # PAGE FAULT
         else:
-            page_faults += 1
+            faults += 1
             result = "FAULT"
 
-            if len(frames) < frames_count:
+            # If frames are not full
+            if len(frames) < capacity:
                 frames.append(page)
+
+            # Replace MOST RECENTLY USED page
             else:
-                # In MRU, we replace the page that was JUST used/accessed
-                # We find where the most_recent_page is in our frames and swap it
-                replace_index = frames.index(most_recent_page)
+                mru_page = max(last_used, key=last_used.get)
+                replace_index = frames.index(mru_page)
                 frames[replace_index] = page
+                del last_used[mru_page]
 
-        # Update the most recent page for the next iteration
-        most_recent_page = page
+        # Update most recent usage
+        last_used[page] = step
 
-        steps.append({
-            "page": page,
-            "frames": list(frames),
-            "result": result
-        })
+        # Display simulation step
+        print(f"{step:<4} | {page:<4} | {str(frames):<13} | {result}")
 
-    return steps, page_faults, hits
+    # Show final statistics
+    print_results(hits, faults, len(pages), capacity)
+
+
+# ================= MAIN PROGRAM =================
+def main():
+
+    print("====== PAGE REPLACEMENT ALGORITHM SIMULATOR ======")
+    print("[1] MRU (Most Recently Used)")
+    print("[0] Exit")
+
+    choice = input("Select an algorithm: ")
+
+    if choice == "1":
+
+        ref_string = input(
+            "Enter page reference string (space-separated, e.g., 7 0 1 2): "
+        )
+
+        try:
+            pages = list(map(int, ref_string.split()))
+            frames = int(input("Enter number of frames: "))
+
+            mru_simulation(pages, frames)
+
+        except ValueError:
+            print("\n[!] Invalid input. Please enter numbers only.")
+
+    else:
+        print("Program ended.")
+
+
+# RUN PROGRAM
+if __name__ == "__main__":
+    main()
