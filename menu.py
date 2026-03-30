@@ -56,11 +56,11 @@ def get_input():
 def main_menu():
     while True:
         print("\n===== PAGE REPLACEMENT ALGORITHM SIMULATOR =====")
-        print("[1] LRU (Least Recently Used)")
-        print("[2] Optimal (Belady's Algorithm)")
-        print("[3] MRU (Most Recently Used)")
-        print("[4] Second Chance (Clock)")
-        print("[5] FIFO (First-In, First-Out)")
+        print("[1] FIFO (First-In, First-Out)")
+        print("[2] LRU (Least Recently Used)")
+        print("[3] Optimal (Belady's Algorithm)")
+        print("[4] MRU (Most Recently Used)")
+        print("[5] Second Chance (Clock)")
         print("[0] Exit")
         
         choice = input("Select an algorithm: ")
@@ -78,25 +78,25 @@ def main_menu():
             continue
 
         if choice == "1":
+            # Calling run_fifo from fifo.py
+            steps, faults, hits = fifo.run_fifo(pages, frames_count)
+            display_results("FIFO", steps, faults, hits)
+        elif choice == "2":
             # Calling run_lru from lru.py
             steps, faults, hits = lru.run_lru(pages, frames_count)
             display_results("LRU", steps, faults, hits)
-        elif choice == "2":
+        elif choice == "3":
             # Calling run_optimal from optimal.py
             steps, faults, hits = optimal.run_optimal(pages, frames_count)
             display_results("Optimal", steps, faults, hits)
-        elif choice == "3":
+        elif choice == "4":
             # Calling run_mru from mru.py
             steps, faults, hits = mru.run_mru(pages, frames_count)
             display_results("MRU", steps, faults, hits)
-        elif choice == "4":
+        elif choice == "5":
             # Calling run_second_chance from second_chance.py
             steps, faults, hits = second_chance.run_second_chance(pages, frames_count)
             display_results("Second Chance", steps, faults, hits)
-        elif choice == "5":
-            # Calling run_fifo from fifo.py
-            steps, faults, hits = fifo.run_fifo(pages, frames_count)
-            display_results("FIFO", steps, faults, hits)    
 
 if __name__ == "__main__":
     main_menu()
