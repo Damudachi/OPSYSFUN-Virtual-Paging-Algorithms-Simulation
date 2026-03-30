@@ -2,6 +2,7 @@ import optimal
 import lru
 import mru
 import second_chance
+import fifo
 
 def display_results(algo_name, steps, faults, hits):
     """
@@ -56,6 +57,7 @@ def main_menu():
         print("[2] Optimal (Belady's Algorithm)")
         print("[3] MRU (Most Recently Used)")
         print("[4] Second Chance (Clock)")
+        print("[5] FIFO (First-In, First-Out)")
         print("[0] Exit")
         
         choice = input("Select an algorithm: ")
@@ -64,7 +66,7 @@ def main_menu():
             print("Exiting Simulator. Goodbye!")
             break
         
-        if choice not in ['1', '2', '3', '4']:
+        if choice not in ['1', '2', '3', '4','5']:
             print("\n[!] Invalid choice or Algorithm not yet implemented.")
             continue
 
@@ -88,6 +90,10 @@ def main_menu():
             # Calling run_second_chance from second_chance.py
             steps, faults, hits = second_chance.run_second_chance(pages, frames_count)
             display_results("Second Chance", steps, faults, hits)
+        elif choice == "5":
+            # Calling run_fifo from fifo.py
+            steps, faults, hits = fifo.run_fifo(pages, frames_count)
+            display_results("FIFO", steps, faults, hits)    
 
 if __name__ == "__main__":
     main_menu()
